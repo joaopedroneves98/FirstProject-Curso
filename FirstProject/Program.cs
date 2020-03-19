@@ -1,58 +1,110 @@
-﻿using System;
+﻿using FirstProject.Entities;
+using FirstProject.Entities.Enums;
+using System;
 using System.Globalization;
 
 namespace FirstProject {
     class Program {
         static void Main(string[] args) {
+            //ExSaidaDados();
+            //ExEntradaDados();
+            //ExVetores();
+            ExEnumsComp();
+        }
 
-            //  EXERCICIO DE SAIDA DE DADOS
-            //string produto1 = "Computador";
-            //string produto2 = "Mesa de Escritório";
+        // EXERCICIO ENUMS E COMPOSICAO
+        private static void ExEnumsComp() {
+            Console.Write("Enter Department's name: ");
+            string deptName = Console.ReadLine();
+            Console.WriteLine("Enter Worker Data");
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.Write("Level (Junior/MidLevel/Senior): ");
+            WorkerLevel level = Enum.Parse<WorkerLevel>(Console.ReadLine());
+            Console.Write("Base Salary: ");
+            double baseSalary = double.Parse(Console.ReadLine());
 
-            //byte idade = 30;
-            //int codigo = 5290;
-            //char genero = 'M';
+            Department dept = new Department(deptName);
+            Worker worker = new Worker(name, level, baseSalary, dept);
 
-            //double preco1 = 2100.0;
-            //double preco2 = 650.50;
-            //double medida = 53.234567;
+            Console.Write("How many contracts for this worker? ");
+            int n = int.Parse(Console.ReadLine());
 
-            //Console.WriteLine("Produtos:");
-            //Console.WriteLine(produto1 + ", cujo preço é " + preco1 + "€");
-            //Console.WriteLine(produto2 + ", cujo preço é " + preco2 + "€");
+            for (int i = 0; i < n; i++) {
+                Console.WriteLine($"Enter #{i} contract data: ");
+                Console.Write("Date (DD/MM/YYYY): ");
+                DateTime date = DateTime.Parse(Console.ReadLine());
+                Console.Write("Value per hour: ");
+                double valuePerHour = double.Parse(Console.ReadLine());
+                Console.Write("Duration (hours): ");
+                int hours = int.Parse(Console.ReadLine());
+                HourContract contract = new HourContract(date, valuePerHour, hours);
+                worker.AddContract(contract);
+            }
+            Console.WriteLine();
+            Console.Write("Enter month and year to calculate income (MM/YYYY): ");
+            string monthYear = Console.ReadLine();
+            int month = int.Parse(monthYear.Substring(0, 2));
+            int year = int.Parse(monthYear.Substring(3));
+            Console.WriteLine("Name: " + worker.Name);
+            Console.WriteLine("Department: " + worker.Department.Name);
+            Console.WriteLine("Income for " + monthYear + ": " + worker.Income(year, month));
+        }
 
-            //Console.WriteLine("Registo: " + idade + " anos de idade, codigo " + codigo + " e género: " + genero);
+        //  EXERCICIO DE SAIDA DE DADOS
+        private static void ExSaidaDados() {
 
-            //Console.WriteLine("Medida com oito casas decimais: " + medida.ToString("F8"));
-            //Console.WriteLine("Arredondado (três casas decimais): " + medida.ToString("F3"));
-            //Console.WriteLine("Separador decimal invariant culture: " + medida.ToString("F3", CultureInfo.InvariantCulture));
+            string produto1 = "Computador";
+            string produto2 = "Mesa de Escritório";
 
-            // EXERCICIO DE ENTRADA DE DADOS
+            byte idade = 30;
+            int codigo = 5290;
+            char genero = 'M';
 
-            //Console.WriteLine("Insira o seu nome completo: ");
-            //string nome = Console.ReadLine();
+            double preco1 = 2100.0;
+            double preco2 = 650.50;
+            double medida = 53.234567;
 
-            //Console.WriteLine("Quantos quartos tem a sua casa?");
-            //int quartos = int.Parse(Console.ReadLine());
+            Console.WriteLine("Produtos:");
+            Console.WriteLine(produto1 + ", cujo preço é " + preco1 + "€");
+            Console.WriteLine(produto2 + ", cujo preço é " + preco2 + "€");
 
-            //Console.WriteLine("Insira o preço de um produto: ");
-            //double preco = double.Parse(Console.ReadLine());
+            Console.WriteLine("Registo: " + idade + " anos de idade, codigo " + codigo + " e género: " + genero);
 
-            //Console.WriteLine("Insira o seu nome, idade e altura (mesma linha): ");
-            //string[] dados = Console.ReadLine().Split(' ');
+            Console.WriteLine("Medida com oito casas decimais: " + medida.ToString("F8"));
+            Console.WriteLine("Arredondado (três casas decimais): " + medida.ToString("F3"));
+            Console.WriteLine("Separador decimal invariant culture: " + medida.ToString("F3", CultureInfo.InvariantCulture));
+        }
 
-            //string nome2 = dados[0];
-            //int idade2 = int.Parse(dados[1]);
-            //double altura = double.Parse(dados[2]);
+        // EXERCICIO DE ENTRADA DE DADOS
+        private static void ExEntradaDados() {
 
-            //Console.WriteLine(nome);
-            //Console.WriteLine(quartos);
-            //Console.WriteLine(preco);
-            //Console.WriteLine(nome2);
-            //Console.WriteLine(idade2);
-            //Console.WriteLine(altura);
+            Console.WriteLine("Insira o seu nome completo: ");
+            string nome = Console.ReadLine();
 
-            // EXERCICIO VETORES 
+            Console.WriteLine("Quantos quartos tem a sua casa?");
+            int quartos = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Insira o preço de um produto: ");
+            double preco = double.Parse(Console.ReadLine());
+
+            Console.WriteLine("Insira o seu nome, idade e altura (mesma linha): ");
+            string[] dados = Console.ReadLine().Split(' ');
+
+            string nome2 = dados[0];
+            int idade2 = int.Parse(dados[1]);
+            double altura = double.Parse(dados[2]);
+
+            Console.WriteLine(nome);
+            Console.WriteLine(quartos);
+            Console.WriteLine(preco);
+            Console.WriteLine(nome2);
+            Console.WriteLine(idade2);
+            Console.WriteLine(altura);
+        }
+
+        // EXERCICIO VETORES 
+        private static void ExVetores() {
 
             Console.Write("How many rooms would you like to rent? ");
             int n = int.Parse(Console.ReadLine());
