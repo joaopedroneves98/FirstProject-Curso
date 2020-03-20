@@ -1,6 +1,7 @@
 ﻿using FirstProject.Entities;
 using FirstProject.Entities.Enums;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace FirstProject {
@@ -10,7 +11,48 @@ namespace FirstProject {
             //ExEntradaDados();
             //ExVetores();
             //ExEnumsComp();
-            ExEnumsFinal();
+            //ExEnumsFinal();
+            ExHerancaAbstrata();
+        }
+
+        // EXERCICIO HERANÇA E CLASSES ABSTRATAS
+        private static void ExHerancaAbstrata() {
+            Console.Write("Enter the number of tax payers: ");
+            int n = int.Parse(Console.ReadLine());
+
+            List<TaxPayer> taxPayers = new List<TaxPayer>();
+
+            for (int i = 0; i < n; i++) {
+                Console.WriteLine($"Tax payer #{i+1} data: ");
+                Console.Write("Individual or company (i/c)? ");
+                char ic = char.Parse(Console.ReadLine());
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+                Console.Write("Annual income: ");
+                double annualIncome = double.Parse(Console.ReadLine());
+                if (ic == 'i') {
+                    Console.Write("Health expenditures: ");
+                    double health = double.Parse(Console.ReadLine());
+                    TaxPayer ind = new Individual(name, annualIncome, health);
+                    taxPayers.Add(ind);
+                }
+                else {
+                    Console.Write("Number of employees: ");
+                    int nEmployees = int.Parse(Console.ReadLine());
+                    TaxPayer comp = new Company(name, annualIncome, nEmployees);
+                    taxPayers.Add(comp);
+                }
+            }
+
+            double total = 0;
+
+            Console.WriteLine("TAXES PAID: ");
+            foreach (var payer in taxPayers) {
+                Console.WriteLine(payer.Name + ": $ " + payer.CalculateTax());
+                total += payer.CalculateTax();
+            }
+
+            Console.WriteLine("TOTAL TAXES: $" + total);
         }
 
         // EXERCICIO ENUMS E COMPOSICAO FINAL
