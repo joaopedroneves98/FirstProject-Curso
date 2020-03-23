@@ -1,5 +1,6 @@
 ﻿using FirstProject.Entities;
 using FirstProject.Entities.Enums;
+using FirstProject.Entities.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,7 +13,36 @@ namespace FirstProject {
             //ExVetores();
             //ExEnumsComp();
             //ExEnumsFinal();
-            ExHerancaAbstrata();
+            //ExHerancaAbstrata();
+            ExExcecoes();
+        }
+
+        // EXERCICIO EXCECOES
+        private static void ExExcecoes() {
+            try {
+                Console.WriteLine("Enter account data");
+                Console.Write("Number: ");
+                int number = int.Parse(Console.ReadLine());
+                Console.Write("Holder: ");
+                string holder = Console.ReadLine();
+                Console.Write("Initial Balance: ");
+                double balance = double.Parse(Console.ReadLine());
+                Console.Write("Withdraw Limit: ");
+                double withdrawLimit = double.Parse(Console.ReadLine());
+
+                Account account = new Account(number, holder, withdrawLimit, balance);
+
+                Console.WriteLine();
+
+                Console.Write("Enter amount for withdraw: ");
+                double amount = double.Parse(Console.ReadLine());
+                account.Withdraw(amount);
+
+                Console.WriteLine("New balance: " + account.Balance);
+            }
+            catch (DomainException ex) {
+                Console.WriteLine("Withdraw error: " + ex.Message);
+            }
         }
 
         // EXERCICIO HERANÇA E CLASSES ABSTRATAS
@@ -23,7 +53,7 @@ namespace FirstProject {
             List<TaxPayer> taxPayers = new List<TaxPayer>();
 
             for (int i = 0; i < n; i++) {
-                Console.WriteLine($"Tax payer #{i+1} data: ");
+                Console.WriteLine($"Tax payer #{i + 1} data: ");
                 Console.Write("Individual or company (i/c)? ");
                 char ic = char.Parse(Console.ReadLine());
                 Console.Write("Name: ");
@@ -76,7 +106,7 @@ namespace FirstProject {
             Order order = new Order(status, client);
 
             for (int i = 0; i < nItems; i++) {
-                Console.WriteLine($"Enter #{i+1} item data: ");
+                Console.WriteLine($"Enter #{i + 1} item data: ");
                 Console.Write("Product Name: ");
                 string prodName = Console.ReadLine();
                 Console.Write("Product Price: ");
