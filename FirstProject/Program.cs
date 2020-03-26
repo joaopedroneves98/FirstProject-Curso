@@ -4,6 +4,7 @@ using FirstProject.Entities.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 namespace FirstProject {
     class Program {
@@ -15,6 +16,108 @@ namespace FirstProject {
             //ExEnumsFinal();
             //ExHerancaAbstrata();
             ExExcecoes();
+        }
+
+        // EXERCICIO DIRECTORY
+        private static void ExDirectory() {
+            string path = @"c:\temp\myfolder";
+
+            try {
+                IEnumerable<string> folder = Directory.EnumerateDirectories(path, "*.*", SearchOption.AllDirectories);
+                Console.WriteLine("FOLDERS: ");
+                foreach (var f in folder) {
+                    Console.WriteLine(f);
+                }
+
+                IEnumerable<string> files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories);
+                Console.WriteLine("FILES: ");
+                foreach (var f in files) {
+                    Console.WriteLine(f);
+                }
+                Directory.CreateDirectory(path + "\\newfolder");
+            }
+            catch (IOException ex) {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        // EXERCICIO STREAMWRITTER
+        private static void ExStreamWritter() {
+            string sourcePath = @"c:\temp\file1.txt";
+            string targetPath = @"c:\temp\file2.txt";
+
+            try {
+                string[] lines = File.ReadAllLines(sourcePath);
+                using(StreamWriter sw = File.AppendText(targetPath)) {
+                    foreach (var line in lines) {
+                        sw.WriteLine(line.ToUpper());
+                    }
+                }
+            }
+            catch (IOException ex) {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        // EXERCICIO USING
+        private static void ExUsing() {
+            string path = @"c:\temp\file1.txt";
+            try {
+                using (StreamReader sr = File.OpenText(path)) {
+                    while (!sr.EndOfStream) {
+                        string line = sr.ReadLine();
+                        Console.WriteLine(line);
+                    }
+                }
+
+            }
+            catch (IOException e) {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        // EXERCICIO STREAM
+        private static void ExStream() {
+            string path = @"c:\temp\file1.txt";
+            StreamReader sr = null;
+            try {
+                sr = File.OpenText(path);
+                while (!sr.EndOfStream) {
+                    string line = sr.ReadLine();
+                    Console.WriteLine(line);
+                }
+            }
+            catch (IOException ex) {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(ex.Message);
+            }
+            finally {
+                if (sr != null) {
+                    sr.Close();
+                }
+            }
+        }
+
+        // EXERCICIO FILE
+        private static void ExFile() {
+            string sourcePath = @"c:\temp\file1.txt";
+            string targetPath = @"c:\temp\file2.txt";
+
+            try {
+                FileInfo fileInfo = new FileInfo(sourcePath);
+                fileInfo.CopyTo(targetPath);
+                string[] lines = File.ReadAllLines(sourcePath);
+                foreach (var item in lines) {
+                    Console.WriteLine(item);
+                }
+            }
+            catch (IOException ex) {
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(ex.Message);
+            }
         }
 
         // EXERCICIO EXCECOES
