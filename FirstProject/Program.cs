@@ -1,6 +1,7 @@
 ﻿using FirstProject.Entities;
 using FirstProject.Entities.Enums;
 using FirstProject.Entities.Exceptions;
+using FirstProject.Entities.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +16,60 @@ namespace FirstProject {
             //ExEnumsComp();
             //ExEnumsFinal();
             //ExHerancaAbstrata();
-            ExExcecoes();
+            //ExExcecoes();
+            ExInterfaces();
+        }
+
+        // EXERCICIO INTERFACES
+        private static void ExInterfaces() {
+            Console.WriteLine("Enter contract data");
+            Console.Write("Number: ");
+            int contractNumber = int.Parse(Console.ReadLine());
+            Console.Write("Date (dd/MM/yyyy): ");
+            DateTime contractDate = DateTime.Parse(Console.ReadLine());
+            Console.Write("Contract value: ");
+            double contractValue = double.Parse(Console.ReadLine());
+            Console.Write("Enter the number of installments: ");
+            int numberMonths = int.Parse(Console.ReadLine());
+
+            Contract contract = new Contract(contractNumber, contractDate, contractValue);
+            ContractService contractService = new ContractService(new PayPalService());
+            contractService.ProcessContract(contract, numberMonths);
+
+            Console.WriteLine("Installments");
+            foreach (var i in contract.Installments) {
+                Console.WriteLine(i);
+            }
+        }
+
+        // EXERCICIO FICHEIROS
+        private static void ExFiles() {
+            Console.Write("Enter file full path: ");
+            string sourcePath = Console.ReadLine();
+
+            try {
+                string[] lines = File.ReadAllLines(sourcePath);
+
+                string sourceFolder = Path.GetDirectoryName(sourcePath);
+                string targetFolder = sourceFolder + @"\out";
+                string targetFile = targetFolder + @"\summary.csv";
+
+                Directory.CreateDirectory(targetFolder);
+
+                using(StreamWriter sw = File.AppendText(targetFile)) {
+                    foreach (var line in lines) {
+                        string[] fields = line.Split(',');
+                        string name = fields[0];
+                        double price = double.Parse(fields[1]);
+                        int quantity = int.Parse(fields[2]);
+
+                        sw.WriteLine(name + ", " + (quantity * price));
+                    }
+                }
+            }catch(IOException e) {
+                Console.WriteLine("An error has occurred");
+                Console.WriteLine(e.Message);
+            }
         }
 
         // EXERCICIO DIRECTORY
