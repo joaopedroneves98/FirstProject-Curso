@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace FirstProject {
     class Program {
@@ -17,7 +18,40 @@ namespace FirstProject {
             //ExEnumsFinal();
             //ExHerancaAbstrata();
             //ExExcecoes();
-            ExInterfaces();
+            //ExInterfaces();
+            ExLinq();
+        }
+
+        // EXERCICIO LINQ
+        private static void ExLinq() {
+            string path = @"C:\Users\jpvasconcelosneves\Documents\Projetos\FirstProject\employees.txt";
+            List<Employee> employees = new List<Employee>();
+            try {
+                using(StreamReader sr = File.OpenText(path)) {
+                    while (!sr.EndOfStream) {
+                        string[] fields = sr.ReadLine().Split(',');
+                        string name = fields[0];
+                        string email = fields[1];
+                        double salary = double.Parse(fields[2]);
+                        Employee emp = new Employee(name, email, salary);
+                        employees.Add(emp);
+                    }
+                }
+
+            } catch (IOException e) {
+                Console.WriteLine(e.Message);
+            }
+
+            Console.Write("Enter salary: ");
+            double salaryIn = double.Parse(Console.ReadLine());
+            var empSal = employees.Where(e => e.Salary > salaryIn).Select(e => e.Email);
+            Console.WriteLine("Email of people whose salary is more than " + salaryIn);
+            foreach (var e in empSal) {
+                Console.WriteLine(e);
+            }
+            var empM = employees.Where(e => e.Name.StartsWith('M'));
+            var sum = empM.Sum(e => e.Salary);
+            Console.WriteLine("Sum of salary of people whose name starts with M: " + sum);
         }
 
         // EXERCICIO INTERFACES
